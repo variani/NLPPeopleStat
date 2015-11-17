@@ -1,0 +1,179 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    <link rel='stylesheet' href=../inc/nv.d3.css>
+    <link rel='stylesheet' href=../inc/rNVD3.css>
+    
+    <script type='text/javascript' src=../inc/jquery-1.8.2.min.js></script>
+    <script type='text/javascript' src=../inc/d3.v3.min.js></script>
+    <script type='text/javascript' src=../inc/nv.d3.min-new.js></script>
+    <script type='text/javascript' src=../inc/fisheye.js></script>
+
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body>
+    <div id='p3' class='rChart nvd3'></div>  
+    
+    <script type='text/javascript'>
+ $(document).ready(function(){
+      drawp3()
+    });
+    function drawp3(){  
+      var opts = {
+ "dom": "p3",
+"width":    800,
+"height":    400,
+"x": "Sub.category",
+"y": "Freq",
+"group": "Level.of.experience.years",
+"type": "multiBarChart",
+"id": "p3" 
+},
+        data = [
+ {
+ "Sub.category": "Researchers",
+"Level.of.experience.years": "Entry Level (Less than 2 years of Experience)",
+"Freq": 23 
+},
+{
+ "Sub.category": "Researchers",
+"Level.of.experience.years": "Mid Career (2+ years of experience)",
+"Freq": 129 
+},
+{
+ "Sub.category": "Researchers",
+"Level.of.experience.years": "Senior (5+ years of experience)",
+"Freq": 65 
+},
+{
+ "Sub.category": "Researchers",
+"Level.of.experience.years": "Management (Manager/Director)",
+"Freq": 2 
+},
+{
+ "Sub.category": "Developers",
+"Level.of.experience.years": "Entry Level (Less than 2 years of Experience)",
+"Freq": 23 
+},
+{
+ "Sub.category": "Developers",
+"Level.of.experience.years": "Mid Career (2+ years of experience)",
+"Freq": 222 
+},
+{
+ "Sub.category": "Developers",
+"Level.of.experience.years": "Senior (5+ years of experience)",
+"Freq": 114 
+},
+{
+ "Sub.category": "Developers",
+"Level.of.experience.years": "Management (Manager/Director)",
+"Freq": 1 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Level.of.experience.years": "Entry Level (Less than 2 years of Experience)",
+"Freq": 3 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Level.of.experience.years": "Mid Career (2+ years of experience)",
+"Freq": 29 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Level.of.experience.years": "Senior (5+ years of experience)",
+"Freq": 3 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Level.of.experience.years": "Management (Manager/Director)",
+"Freq": 0 
+},
+{
+ "Sub.category": "Consultants",
+"Level.of.experience.years": "Entry Level (Less than 2 years of Experience)",
+"Freq": 7 
+},
+{
+ "Sub.category": "Consultants",
+"Level.of.experience.years": "Mid Career (2+ years of experience)",
+"Freq": 34 
+},
+{
+ "Sub.category": "Consultants",
+"Level.of.experience.years": "Senior (5+ years of experience)",
+"Freq": 34 
+},
+{
+ "Sub.category": "Consultants",
+"Level.of.experience.years": "Management (Manager/Director)",
+"Freq": 0 
+},
+{
+ "Sub.category": "Managers",
+"Level.of.experience.years": "Entry Level (Less than 2 years of Experience)",
+"Freq": 4 
+},
+{
+ "Sub.category": "Managers",
+"Level.of.experience.years": "Mid Career (2+ years of experience)",
+"Freq": 50 
+},
+{
+ "Sub.category": "Managers",
+"Level.of.experience.years": "Senior (5+ years of experience)",
+"Freq": 57 
+},
+{
+ "Sub.category": "Managers",
+"Level.of.experience.years": "Management (Manager/Director)",
+"Freq": 16 
+} 
+]
+  
+      var data = d3.nest()
+        .key(function(d){
+          return opts.group === undefined ? 'main' : d[opts.group]
+        })
+        .entries(data)
+      
+      nv.addGraph(function() {
+        var chart = nv.models[opts.type]()
+          .x(function(d) { return d[opts.x] })
+          .y(function(d) { return d[opts.y] })
+          .width(opts.width)
+          .height(opts.height)
+         
+        
+          
+        
+
+        
+        
+        
+      
+       d3.select("#" + opts.id)
+        .append('svg')
+        .datum(data)
+        .transition().duration(500)
+        .call(chart);
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+      });
+    };
+</script>
+    
+  </body>
+</html>
