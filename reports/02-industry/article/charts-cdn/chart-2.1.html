@@ -1,0 +1,849 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    <link rel='stylesheet' href=../inc/nv.d3.css>
+    <link rel='stylesheet' href=../inc/rNVD3.css>
+    
+    <script type='text/javascript' src=../inc/jquery-1.8.2.min.js></script>
+    <script type='text/javascript' src=../inc/d3.v3.min.js></script>
+    <script type='text/javascript' src=../inc/nv.d3.min-new.js></script>
+    <script type='text/javascript' src=../inc/fisheye.js></script>
+
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body>
+    <div id='p1' class='rChart nvd3'></div>  
+    
+    <script type='text/javascript'>
+ $(document).ready(function(){
+      drawp1()
+    });
+    function drawp1(){  
+      var opts = {
+ "dom": "p1",
+"width":    800,
+"height":    400,
+"x": "Date",
+"y": "value",
+"group": "variable",
+"type": "stackedAreaChart",
+"id": "p1" 
+},
+        data = [
+ {
+ "month.year": "Apr-12",
+"variable": "Researchers",
+"value": 12,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Researchers",
+"value": 27,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Researchers",
+"value": 16,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Researchers",
+"value": 15,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Researchers",
+"value": 25,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Researchers",
+"value": 29,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Researchers",
+"value": 73,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Researchers",
+"value": 61,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Researchers",
+"value": 34,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Researchers",
+"value": 55,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Researchers",
+"value": 61,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Researchers",
+"value": 59,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Researchers",
+"value": 50,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Researchers",
+"value": 77,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Researchers",
+"value": 68,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Researchers",
+"value": 60,
+"Date":  15887 
+},
+{
+ "month.year": "Apr-12",
+"variable": "Developers",
+"value": 15,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Developers",
+"value": 23,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Developers",
+"value": 15,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Developers",
+"value": 20,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Developers",
+"value": 42,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Developers",
+"value": 40,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Developers",
+"value": 51,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Developers",
+"value": 59,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Developers",
+"value": 36,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Developers",
+"value": 61,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Developers",
+"value": 70,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Developers",
+"value": 46,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Developers",
+"value": 37,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Developers",
+"value": 47,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Developers",
+"value": 61,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Developers",
+"value": 60,
+"Date":  15887 
+},
+{
+ "month.year": "Apr-12",
+"variable": "Comp. Linguists",
+"value": 2,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Comp. Linguists",
+"value": 5,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Comp. Linguists",
+"value": 3,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Comp. Linguists",
+"value": 3,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Comp. Linguists",
+"value": 8,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Comp. Linguists",
+"value": 11,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Comp. Linguists",
+"value": 10,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Comp. Linguists",
+"value": 8,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Comp. Linguists",
+"value": 8,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Comp. Linguists",
+"value": 0,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Comp. Linguists",
+"value": 4,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Comp. Linguists",
+"value": 7,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Comp. Linguists",
+"value": 5,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Comp. Linguists",
+"value": 0,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Comp. Linguists",
+"value": 3,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Comp. Linguists",
+"value": 4,
+"Date":  15887 
+},
+{
+ "month.year": "Apr-12",
+"variable": "Consultants",
+"value": 4,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Consultants",
+"value": 2,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Consultants",
+"value": 0,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Consultants",
+"value": 3,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Consultants",
+"value": 6,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Consultants",
+"value": 13,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Consultants",
+"value": 28,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Consultants",
+"value": 24,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Consultants",
+"value": 12,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Consultants",
+"value": 18,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Consultants",
+"value": 16,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Consultants",
+"value": 10,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Consultants",
+"value": 15,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Consultants",
+"value": 14,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Consultants",
+"value": 2,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Consultants",
+"value": 13,
+"Date":  15887 
+},
+{
+ "month.year": "Apr-12",
+"variable": "Managers",
+"value": 0,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Managers",
+"value": 0,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Managers",
+"value": 1,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Managers",
+"value": 3,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Managers",
+"value": 12,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Managers",
+"value": 13,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Managers",
+"value": 16,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Managers",
+"value": 21,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Managers",
+"value": 13,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Managers",
+"value": 21,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Managers",
+"value": 20,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Managers",
+"value": 17,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Managers",
+"value": 10,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Managers",
+"value": 23,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Managers",
+"value": 14,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Managers",
+"value": 8,
+"Date":  15887 
+},
+{
+ "month.year": "Apr-12",
+"variable": "Others",
+"value": 0,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Others",
+"value": 0,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Others",
+"value": 1,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Others",
+"value": 0,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Others",
+"value": 0,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Others",
+"value": 4,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Others",
+"value": 12,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Others",
+"value": 11,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Others",
+"value": 16,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Others",
+"value": 9,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Others",
+"value": 6,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Others",
+"value": 19,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Others",
+"value": 13,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Others",
+"value": 15,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Others",
+"value": 14,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Others",
+"value": 11,
+"Date":  15887 
+},
+{
+ "month.year": "Apr-12",
+"variable": "Software Testers",
+"value": 2,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Software Testers",
+"value": 0,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Software Testers",
+"value": 0,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Software Testers",
+"value": 0,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Software Testers",
+"value": 7,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Software Testers",
+"value": 1,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Software Testers",
+"value": 2,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Software Testers",
+"value": 4,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Software Testers",
+"value": 1,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Software Testers",
+"value": 1,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Software Testers",
+"value": 3,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Software Testers",
+"value": 2,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Software Testers",
+"value": 1,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Software Testers",
+"value": 1,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Software Testers",
+"value": 3,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Software Testers",
+"value": 2,
+"Date":  15887 
+},
+{
+ "month.year": "Apr-12",
+"variable": "Product Managers",
+"value": 0,
+"Date":  15431 
+},
+{
+ "month.year": "May-12",
+"variable": "Product Managers",
+"value": 0,
+"Date":  15461 
+},
+{
+ "month.year": "Jun-12",
+"variable": "Product Managers",
+"value": 0,
+"Date":  15492 
+},
+{
+ "month.year": "Jul-12",
+"variable": "Product Managers",
+"value": 1,
+"Date":  15522 
+},
+{
+ "month.year": "Aug-12",
+"variable": "Product Managers",
+"value": 2,
+"Date":  15553 
+},
+{
+ "month.year": "Sep-12",
+"variable": "Product Managers",
+"value": 3,
+"Date":  15584 
+},
+{
+ "month.year": "Oct-12",
+"variable": "Product Managers",
+"value": 1,
+"Date":  15614 
+},
+{
+ "month.year": "Nov-12",
+"variable": "Product Managers",
+"value": 3,
+"Date":  15645 
+},
+{
+ "month.year": "Dec-12",
+"variable": "Product Managers",
+"value": 3,
+"Date":  15675 
+},
+{
+ "month.year": "Jan-13",
+"variable": "Product Managers",
+"value": 0,
+"Date":  15706 
+},
+{
+ "month.year": "Feb-13",
+"variable": "Product Managers",
+"value": 2,
+"Date":  15737 
+},
+{
+ "month.year": "Mar-13",
+"variable": "Product Managers",
+"value": 3,
+"Date":  15765 
+},
+{
+ "month.year": "Apr-13",
+"variable": "Product Managers",
+"value": 0,
+"Date":  15796 
+},
+{
+ "month.year": "May-13",
+"variable": "Product Managers",
+"value": 2,
+"Date":  15826 
+},
+{
+ "month.year": "Jun-13",
+"variable": "Product Managers",
+"value": 6,
+"Date":  15857 
+},
+{
+ "month.year": "Jul-13",
+"variable": "Product Managers",
+"value": 2,
+"Date":  15887 
+} 
+]
+  
+      var data = d3.nest()
+        .key(function(d){
+          return opts.group === undefined ? 'main' : d[opts.group]
+        })
+        .entries(data)
+      
+      nv.addGraph(function() {
+        var chart = nv.models[opts.type]()
+          .x(function(d) { return d[opts.x] })
+          .y(function(d) { return d[opts.y] })
+          .width(opts.width)
+          .height(opts.height)
+         
+        chart
+  .color([ "#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A" ])
+          
+        chart.xAxis
+  .tickFormat(function(d) {return d3.time.format('%b %Y')(new Date( d * 86400000 ));})
+
+        
+        
+        
+      
+       d3.select("#" + opts.id)
+        .append('svg')
+        .datum(data)
+        .transition().duration(500)
+        .call(chart);
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+      });
+    };
+</script>
+    
+  </body>
+</html>

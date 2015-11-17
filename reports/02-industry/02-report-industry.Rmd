@@ -1,0 +1,389 @@
+% Report #3: Industry
+% Andrey Ziyatdinov
+% 15/08/2013
+
+<link rel='stylesheet' href=inc/nv.d3.css>
+<link rel='stylesheet' href=inc/rNVD3.css>
+<script type='text/javascript' src=inc/jquery-1.8.2.min.js></script>
+<script type='text/javascript' src=inc/d3.v3.min.js></script>
+<script type='text/javascript' src=inc/nv.d3.min-new.js></script>
+<script type='text/javascript' src=inc/fisheye.js></script>
+
+
+```{r setup, include = FALSE}
+# set global chunk options
+opts_chunk$set(fig.path = 'figure/', cache.path = 'cache/', echo = FALSE, cache = TRUE, 
+  fig.width = 9, fig.height = 4.5, dev = 'svg',
+  warning = FALSE, message = FALSE)
+# upload images automatically? (identity/imgur_upload)
+opts_knit$set(upload.fun = identity)
+```
+
+```{r include_hidden, echo = FALSE, results = "hide", warning = FALSE, message = FALSE}
+library(xtable)
+library(ascii)
+options(asciiType = 'pandoc')
+
+library(plyr)
+library(reshape)
+
+library(maps)
+
+library(hexbin)
+library(ggplot2)
+library(wq)
+library(grid)
+library(RColorBrewer)
+
+library(rCharts)
+
+library(devtools)
+load_all("~/git/variani/NLPPeopleStat/pck/")
+```
+
+```{r params}
+include_assets <- TRUE
+cdn <- FALSE
+```
+
+```{r data}
+load("../../R/rdata/postings.RData")
+
+# Subcat
+postings <- within(postings, {
+  Sub.category[Sub.category == "Consultants/experts"] <- "Consultants/Experts"
+  Sub.category <- droplevels(Sub.category)
+})
+
+# level names
+levels(postings$Sub.category)[1:7] <- c("Researchers", "Developers", "Consultants", 
+  "Managers", "Others", "Comp. Linguists", "Internships")
+# level order  
+lev <- levels(postings$Sub.category)
+postings$Sub.category <- factor(postings$Sub.category, levels = lev[c(1:2, 6, 3:4, 5, 8:9)])
+
+# Exp
+uval <- sort(unique(as.character(postings$Level.of.experience.years)))
+#[1] "Entry Level (Less than 2 years of Experience)"
+#[2] "Executive (SVP, EVP, VP etc)"                 
+#[3] "Internship"                                   
+#[4] "Management (Manager/Director)"                
+#[5] "Mid Career (2+ years of experience)"          
+#[6] "Not Specified"                                
+#[7] "Senior (5+ years of experience)" 
+postings <- mutate(postings,
+  Level.of.experience.years = factor(Level.of.experience.years,
+    levels = uval[c(1, 5, 7, 4, 2, 6)]))
+    
+postings$Rec <- "Direct"
+ind <- grep("Rec\\.|rec\\.", postings$Company)
+postings$Rec[ind] <- "Rec."
+postings$Rec <- factor(postings$Rec)
+    
+postings2 <- subset(postings, Company.type %in% "Industry")
+```
+
+# Introduction
+
+The Report No 2 was dedicated to the study of the educational level and its influence to the career opportunities.
+The educational level was mainly considered in relation to the research positions.
+We expect that the job positions, which are not-research and from the industry sector, 
+have many other factors rather than the educational level.
+
+In this report we will study descriptors of the job postings (including the educational level)
+that play the important role in the industry sector.
+
+The work flow of the analysis will be the following.
+
+* Take the postings data that belong to the industry sector.
+* Select a set of subcategories, which have enough data, and do the analysis only for these subgroups.
+* Check the following list of factors: educational level, experience, type of contract, recruiting or not, technical skills.
+* Before doing the statistics, filter the dataset for removing any small group of the postings.
+
+## Derived variables
+
+### Rec
+
+We derived a new variable `Rec` based on the value of `Company` variable
+(the pattern `Rec.` is given or not).
+This variable encodes two levels, `Rec` and `Direct`, 
+and means whether a posting comes from a recruiting company or not.
+
+```{r, results = "asis"}
+tab <- ddply(postings2, "Rec", summarize, Freq = length(N))
+ascii(tab, format = c("s", "d"), na.print = "N/a")
+```
+
+### Technical Skill
+
+We derived a new variable for description of the technical skills
+mentioned in the text of `Qualifications` variable.
+In particular, we extracted patterns like `Cpp` or `Java`.
+
+The definition of such kind of variables is under development,
+and here we did it the first time and by simply using `grep` command.
+
+# Time Plots
+
+The data used in the report were collected from `r as.character(min(postings$Post.date, na.rm = TRUE))`
+till `r as.character(max(postings$Post.date, na.rm = TRUE))`.
+
+## Number of postings by Subcategory ~ time 
+
+The following figure shows the dynamics of the number of postings over time grouped by subcategory.
+
+Note that the presented number describe the statistics only in the industry sector.
+
+```{r results = 'asis', comment = NA}
+# prepare data
+lev <- levels(postings$Sub.category)
+lev <- lev[!is.na(lev)] # remove NA
+  
+sf <- df_to_sf_month(postings, "Sub.category", lev)
+
+sf <- mutate(sf,
+  month.year = as.character(month.year),
+  Date = as.Date(paste("1", sf$month.year, sep = "-"), format = "%d-%b-%y")
+)
+# plot: Category ~ time
+p1 <- nPlot(value ~ Date, group =  'variable', data = sf, type = 'stackedAreaChart', id = 'chart')
+
+p1$xAxis( tickFormat="#!function(d) {return d3.time.format('%b %Y')(new Date( d * 86400000 ));}!#" )
+p1$chart(color = brewer.pal(10, "Paired"))
+
+p1$print('p1', include_assets = include_assets , cdn = cdn)
+```
+
+```{r}
+subcat.levels <- levels(postings$Sub.category)[1:5]
+```
+
+If one switch to the *Stream* view of the stacked area plot,
+it will be possible to select the most representative subcategories visually.
+These subcategories include: `r paste(subcat.levels, collapse = ", ")`.
+
+From now, we will consider only these 6 subcategories.
+
+# Filters
+
+We apply a set of filters for removing the records which are not representative.
+
+```{r}
+edu.levels <- levels(postings$Educational.level)[1:4]
+exp.levels <- levels(postings$Level.of.experience.years)[1:5]
+contract.levels <- levels(postings$Type.of.contract)[c(1:2, 4)]
+```
+
+## Educational level
+
+```{r, results = "asis"}
+tab <- ddply(postings2, "Educational.level", summarize, Freq = length(N))
+ascii(tab, format = c("s", "d"), na.print = "N/a")
+```
+
+Educational levels which pass the filter: `r paste(edu.levels, collapse = ", ")`.
+
+## Experience
+
+```{r, results = "asis"}
+tab <- ddply(postings2, "Level.of.experience.years", summarize, Freq = length(N))
+ascii(tab, format = c("s", "d"), na.print = "N/a")
+```
+
+Experience levels which pass the filter: `r paste(exp.levels, collapse = ", ")`.
+
+## Type of Contract
+
+```{r, results = "asis"}
+tab <- ddply(postings2, "Type.of.contract", summarize, Freq = length(N))
+ascii(tab, format = c("s", "d"), na.print = "N/a")
+```
+
+Contract levels which pass the filter: `r paste(contract.levels, collapse = ", ")`.
+
+## Application of Filters
+
+```{r}
+postings3 <- subset(postings2, Educational.level %in% edu.levels &
+  Level.of.experience.years %in% exp.levels &
+  Sub.category %in% subcat.levels & 
+  Type.of.contract %in% contract.levels)
+postings3 <- droplevels(postings3)
+```
+
+Further in the next section of the analysis,
+we applied the filters described above separately.
+The reason is that the number of records is reduced dramatically from `r nrow(postings2)` to `r nrow(postings3)`
+after we apply all the three filters together.
+That can be explained with a lot of missing data for each variable per filter.
+
+# Educational level ~ Subcategory
+
+```{r}
+df <- subset(postings2, Sub.category %in% subcat.levels &
+  Educational.level %in% edu.levels)
+df <- droplevels(df)  
+```
+
+Before computing the statistics, we applied the filter for the educational level,
+that leads to a new dataset with the number of records equal to `r nrow(df)`.
+
+The following figure shows the distribution of the postings across the educational level
+for each subcategory.
+
+```{r, results = "asis"}
+sf <- ddply(df, c("Sub.category", "Educational.level"), summarize, Freq = length(N))
+
+p2 <- nPlot(Freq ~ Sub.category, group = 'Educational.level', data = sf, type = 'multiBarChart')
+p2$print('p2', include_assets = include_assets , cdn = cdn)
+```
+
+Observations.
+
+* The PhD is mostly required for Researchers.
+* For all the subcategories except Researches and Computational Linguists,  
+  the major number of job offers are proposed for Bachelors.
+
+# Experience ~ Subcategory
+
+```{r}
+df <- subset(postings2, Sub.category %in% subcat.levels &
+  Level.of.experience.years %in% exp.levels)
+df <- droplevels(df)  
+
+df <- within(df, {
+  Level.of.experience.years[Level.of.experience.years %in% "Executive (SVP, EVP, VP etc)"] <- "Management (Manager/Director)"
+  Level.of.experience.years <- droplevels(Level.of.experience.years)
+})
+```
+
+Before computing the statistics, we applied the filter for the experience level,
+that leads to a new dataset with the number of records equal to `r nrow(df)`.
+
+
+The figure given belows shows the distribution of the postings across the experience levels
+for each subcategory.
+
+```{r, results = "asis"}
+sf <- ddply(df, c("Sub.category", "Level.of.experience.years"), summarize, Freq = length(N), .drop = FALSE)
+
+p3 <- nPlot(Freq ~ Sub.category, group = 'Level.of.experience.years', data = sf, type = 'multiBarChart')
+p3$print('p3', include_assets = include_assets , cdn = cdn)
+```
+
+Observations.
+
+* For two the most popular subcategories Researchers and Developers, 
+  the majority of the job offers are proposed to the candidates with the mid-experience (+2 years).
+* For the category Managers, the specific requirements as Management and Executive are applied.
+* The job offers for Computational Linguists are mostly offered to the mid-experiences candidates (+2 years).
+
+# Type of contract ~ Subcategory
+
+The figure given below shows that the stable contracts (FULLTIME and CONTRACT) 
+are offered to the most of the jobs for all the subcategories.
+
+```{r}
+df <- subset(postings2, Sub.category %in% subcat.levels &
+  Type.of.contract %in% contract.levels)
+df <- droplevels(df)  
+```
+
+Before computing the statistics, we applied the filter for the contract level,
+that leads to a new dataset with the number of records equal to `r nrow(df)`.
+
+
+```{r, results = "asis"}
+sf <- ddply(df, c("Sub.category", "Type.of.contract"), summarize, Freq = length(N), .drop = FALSE)
+
+p5 <- nPlot(Freq ~ Sub.category, group = 'Type.of.contract', data = sf, type = 'multiBarChart')
+p5$print('p5', include_assets = include_assets , cdn = cdn)
+```
+
+# Rec. ~ Subcategory
+
+```{r}
+df <- subset(postings2, Sub.category %in% subcat.levels)
+df <- droplevels(df)  
+```
+
+The following figure presents the distribution of the postings across 
+the two types (Rec. and Direct) for each subcategory.
+
+```{r, results = "asis"}
+myprop <- function(x) 100 * sum(x) / length(x)
+
+sf <- ddply(df, "Sub.category", summarize, 
+  Direct = myprop(Rec %in% "Direct"), 
+  Rec = myprop(Rec %in% "Rec.")) 
+
+mf <- melt(sf, id.vars = "Sub.category")
+
+p6 <- nPlot(value ~ Sub.category, group = 'variable', data = mf, type = 'multiBarChart')
+p6$print('p6', include_assets = include_assets , cdn = cdn)
+```
+
+Observations.
+
+* In the view *Stacked* one can clearly see that 
+  the subcategory Managers differs from the others:
+  the relatively greater portion of the jobs is offered by the recruiting companies.
+  
+# Technical skills ~ Subcategory
+
+The figure shows the distribution of the technical skills for each subcategory.
+
+The skill labeled as *Other* means that none of the defined skills (Java, Cpp, Python, Perl, SQL)
+was found the this group of the postings. Perhaps, the postings labeled as *Other*
+require other skills like R or Matlab.
+
+```{r, results = "asis"}
+#> subcat.levels
+#[1] "Researchers"     "Developers"      "Comp. Linguists" "Consultants"    
+#[5] "Managers"        "Internships"     "Others" 
+df <- subset(postings2, Sub.category %in% subcat.levels[c(1:3)])
+df <- droplevels(df)  
+
+grep_to_log <- function(pat, x)
+{
+  1:length(x) %in% grep(pat, x)
+}
+
+df <- mutate(df,
+  Java = grep_to_log("Java|java", Qualifications),
+  Cpp = grep_to_log("C\\+\\+|c\\+\\+", Qualifications),
+  Python = grep_to_log("Python|python", Qualifications),
+  Perl = grep_to_log("Perl|perl", Qualifications),
+  SQL = grep_to_log("sql|Sql|SQL", Qualifications),
+  SkillNone = !(Java | Cpp | Python | Perl | SQL)
+)  
+
+sf <- ddply(df, "Sub.category", summarize, 
+  Java = myprop(Java), Cpp = myprop(Cpp), Python = myprop(Python), 
+  Perl = myprop(Perl), SQL = myprop(SQL),
+  Other = myprop(SkillNone),
+  .drop = FALSE)
+mf <- melt(sf, id.vars = "Sub.category")
+
+p4 <- nPlot(value ~ Sub.category, group = 'variable', data = mf, type = 'multiBarChart')
+p4$print('p4', include_assets = include_assets , cdn = cdn)
+```
+
+Observations.
+
+* For the two most popular subcategoires Researchers and Developers,
+  the skill of Java seems to be the most wanted.
+* For subcategory Computational Linguists, the skill of Perl is the most popular.
+* For subcategories Consultants, Managers and Other, the skill of SQL is the most popular.
+
+# TODO
+
+* The figures for statistics on Contract and Rec are quite trivial.
+  It will be better to remove the figure and substitute it with the table or some text.
+* It will be important to support the different relation *Job and Requirements* by examples of the job offers.
+    * A job posting for Computational Linguists with skill of Perl.
+    * A job posting for Managers with special requirements in the experience level.
+    
+    
+
+

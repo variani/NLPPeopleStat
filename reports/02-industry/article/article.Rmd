@@ -1,0 +1,72 @@
+---
+title: "Being a professional: what is needed and what is missing"
+author: "Maxim Khalilov & Andrey Ziyatdinov <br /> <br /> This is a copy of the original article published on September 11, 2013 at https://nlppeople.com/being-a-professional-what-is-needed-and-what-is-missing/. All rights belong to NLP People." 
+output:
+  html_document
+---
+
+
+In <a href="https://nlppeople.com/?p=201" target="_blank">the article</a> we published a couple of weeks ago, <strong>Nick Gallimore</strong> warns recent NLP graduates that there is no big job market for linguists without solid coding skills. It stimulated us to run a small research project in order to understand which requirements the industrial job market dictates to computational linguists and other NLP/DM/ML professionals.
+
+As in our <a href="https://nlppeople.com/?p=165" target="_blank">our previous report</a>, we made an attempt to enable the job opening data accumulated over fourteen month of the NLP People operation.
+
+In this report we will tackle a specific topic of educational level and experience required to awake the employers’ interest. In this article we are focusing on vacancies in industry, while the academic market will be covered in the next publication.
+
+As before, we asked <a href="http://es.linkedin.com/pub/andrey-ziyatdinov/40/a08/338?trk=shareTw"><strong>Andrey Ziyatdinov</strong></a>, a full-time researcher at Hospital de Sant Pau (Barcelona), to help us with data analysis.
+
+First, let’s have a look at how the distribution of postings changed over time. 
+
+<p><iframe src="charts-cdn/chart-2.1.html" width="820" height="420" frameBorder="0"></iframe></p>
+
+Based on these numbers we decided to proceed with 5 most informative job categories in industry: Researchers, Developers, Computational Linguists, Consultants/Experts, Managers/Executives, Internships and Others.
+
+In further analysis, we will consider only these 5 subcategories.
+
+The following chart gives some insights on <span style="text-decoration: underline;">the requirements to formal education for graduates and professionals</span> working in the NLP, machine learning, localization or data mining areas. We considered 1,036 job postings with explicitly indicated educational levels (45% of all postings) for the 5 categories.
+
+<p><iframe src="charts-cdn/chart-4.html" width="820" height="420" frameBorder="0"></iframe></p>
+
+Not surprisingly, PhD is the most demanded degree for industrial Researchers. However if you are thinking of working on the software development side, manage IT projects or work as an in-house or independent consultant, Bachelor degree is enough to get a job. 
+
+<hr />
+<p style="text-align: center;"><em><strong>Not surprisingly, PhD is the most demanded degree for industrial Researchers.</strong></em></p>
+<hr />
+
+Computational Linguists, though, is another story. For professionls planning to take the computational linguist role, a MSc degree is highly desirable.
+
+### What about work experience?
+
+The following chart shows the distribution of job postings depending on the experience. We considered 816 job postings with explicitly indicated experience requirements (35% of all postings) for the 5 categories.
+
+<p><iframe src="charts-cdn/chart-5.html" width="820" height="420" frameBorder="0"></iframe></p>
+
+For all major categories, more than 2, but less than 5 years is the most desirable amount of professional work experience. The only exception are <a href="https://nlppeople.com/?p=65">managers</a>. For them, typically the more experience the better, however some jobs also require some special training (MBA, for example).
+
+<hr />
+<p><em><strong>For all major categories, more than 2, but less than 5 years is the most desirable amount of professional work experience.</strong></em></p>
+<hr />
+
+Finally, we analyzed the most demanded <span style="text-decoration: underline;">technical skillset</span> Researchers, Software Engineers and Computational Linguists must possess to be competitive in the modern industrial job market.
+
+<p><iframe src="charts-cdn/chart-8.html" width="820" height="420" frameBorder="0"></iframe></p>
+
+Virtually all NLP/ML/DM professionals must know how to code. 
+
+<a href="https://nlppeople.com/?p=60" target="_blank">Researchers</a> are expected to possess Java, python or C++ programming skills, however they should also have experience with large scale processing (Hadoop, Mahout, etc.), R or Matlab.
+
+It seems that being a <a href="index.php/component/jobboard/taglist/Java" target="_blank">Java Developers</a> is the easiest way to get a job in the modern NLP/ML/DM world. C++ and python programmers will not meet a lot of difficulties getting a job in industry either. However, for many positions knowledge of a single programming language is not enough any more and combinations, like C++ and Java or Java and python are becoming more and more frequent in our database.
+
+<hr />
+<p style="text-align: center;"><em><strong>It seems that being a <a href="index.php/component/jobboard/taglist/Java" target="_blank">Java Developers</a> is the easiest way to get a job in the modern NLP/ML/DM world. </strong></em></p>
+<hr />
+
+Not surprisingly, Perl is almost a “must have” programming language for <a href="https://nlppeople.com/?p=61" target="_blank">Computational Linguists</a> to be fluent in. Besides, Computational Linguists must possess specific technical skills to be successful in their role, like language processing tools (IRSTLM, NLTK, etc.) or database management tools, machine learning instruments or specific toolkits (Moses for statistical machine translation, for example).
+
+We hope that summarizing the results of the NLP, DM and LM industrial job markets analysis will help you to define the required skillset to get a job of your dream. We are always welcome to <a href="index.php/about-us/contactus">to hear from you</a> if you have your own thoughts to share with the NLP People audience.
+
+
+### About the authors
+
+<strong>Maxim Khalilov</strong>, PhD is the R&D manager at TAUS B.V and the co-founder of NLPPeople.com. He is a former post-doctoral researcher at the University of Amsterdam, intern at Macquarie University (Australia) and a PhD student at the Polytechnic University of Catalonia (Spain).
+
+<strong>Andrey Ziyatdinov</strong> is a full-time researcher at Hospital de Sant Pau (Barcelona) working very close to the bioinformatics data processing on a daily basis. He is currently pursuing the PhD degree in Bioengineering at the Polytechnic University of Catalonia (Spain). Andrey’s research interests include applied pattern recognition focusing chemical sensors, machine olfaction, and bioinformatics.

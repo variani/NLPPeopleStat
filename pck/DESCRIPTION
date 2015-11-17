@@ -1,0 +1,22 @@
+Package: nlppeople
+Type: Package
+Title: Data processing on data from nlppeople.com
+Version: 0.1.1
+Date: 2013-07-26
+Author: Andrey Ziyatdinov
+Maintainer: Andrey Ziyatdinov <andrey.ziyatdinov@upc.edu>
+Description: Data processing on data from nlppeople.com
+License: GPL (>= 3)
+Depends:
+    plyr,
+    reshape2,
+    ggplot2,
+    RColorBrewer,
+    mapproj,
+    ggmap
+Collate:
+    'mutate.lib.R'
+    'map.lib.R'
+    'table.lib.R'
+    'plot.lib.R'
+    'geo.lib.R'

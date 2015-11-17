@@ -1,0 +1,179 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    <link rel='stylesheet' href=../inc/nv.d3.css>
+    <link rel='stylesheet' href=../inc/rNVD3.css>
+    
+    <script type='text/javascript' src=../inc/jquery-1.8.2.min.js></script>
+    <script type='text/javascript' src=../inc/d3.v3.min.js></script>
+    <script type='text/javascript' src=../inc/nv.d3.min-new.js></script>
+    <script type='text/javascript' src=../inc/fisheye.js></script>
+
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body>
+    <div id='p2' class='rChart nvd3'></div>  
+    
+    <script type='text/javascript'>
+ $(document).ready(function(){
+      drawp2()
+    });
+    function drawp2(){  
+      var opts = {
+ "dom": "p2",
+"width":    800,
+"height":    400,
+"x": "Sub.category",
+"y": "Freq",
+"group": "Educational.level",
+"type": "multiBarChart",
+"id": "p2" 
+},
+        data = [
+ {
+ "Sub.category": "Researchers",
+"Educational.level": "Bachelor's Degree",
+"Freq": 93 
+},
+{
+ "Sub.category": "Researchers",
+"Educational.level": "Master Degree",
+"Freq": 131 
+},
+{
+ "Sub.category": "Researchers",
+"Educational.level": "Ph. D.",
+"Freq": 142 
+},
+{
+ "Sub.category": "Researchers",
+"Educational.level": "Diploma",
+"Freq": 16 
+},
+{
+ "Sub.category": "Developers",
+"Educational.level": "Bachelor's Degree",
+"Freq": 192 
+},
+{
+ "Sub.category": "Developers",
+"Educational.level": "Master Degree",
+"Freq": 132 
+},
+{
+ "Sub.category": "Developers",
+"Educational.level": "Ph. D.",
+"Freq": 28 
+},
+{
+ "Sub.category": "Developers",
+"Educational.level": "Diploma",
+"Freq": 45 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Educational.level": "Bachelor's Degree",
+"Freq": 18 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Educational.level": "Master Degree",
+"Freq": 27 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Educational.level": "Ph. D.",
+"Freq": 1 
+},
+{
+ "Sub.category": "Comp. Linguists",
+"Educational.level": "Diploma",
+"Freq": 14 
+},
+{
+ "Sub.category": "Consultants",
+"Educational.level": "Bachelor's Degree",
+"Freq": 44 
+},
+{
+ "Sub.category": "Consultants",
+"Educational.level": "Master Degree",
+"Freq": 33 
+},
+{
+ "Sub.category": "Consultants",
+"Educational.level": "Ph. D.",
+"Freq": 5 
+},
+{
+ "Sub.category": "Consultants",
+"Educational.level": "Diploma",
+"Freq": 10 
+},
+{
+ "Sub.category": "Managers",
+"Educational.level": "Bachelor's Degree",
+"Freq": 48 
+},
+{
+ "Sub.category": "Managers",
+"Educational.level": "Master Degree",
+"Freq": 32 
+},
+{
+ "Sub.category": "Managers",
+"Educational.level": "Ph. D.",
+"Freq": 6 
+},
+{
+ "Sub.category": "Managers",
+"Educational.level": "Diploma",
+"Freq": 19 
+} 
+]
+  
+      var data = d3.nest()
+        .key(function(d){
+          return opts.group === undefined ? 'main' : d[opts.group]
+        })
+        .entries(data)
+      
+      nv.addGraph(function() {
+        var chart = nv.models[opts.type]()
+          .x(function(d) { return d[opts.x] })
+          .y(function(d) { return d[opts.y] })
+          .width(opts.width)
+          .height(opts.height)
+         
+        
+          
+        
+
+        
+        
+        
+      
+       d3.select("#" + opts.id)
+        .append('svg')
+        .datum(data)
+        .transition().duration(500)
+        .call(chart);
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+      });
+    };
+</script>
+    
+  </body>
+</html>
